@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <vector>
-#include <math.h>
 #include <unordered_map>
+#include <math.h>
+#include <fstream>
 
 class Location
 {
@@ -29,9 +30,8 @@ public:
     void assignOutlier(bool input) {outlier_ = input;}
 
     // Accessors
-    void printLoc() const {std::cout << '(' << x_ << ',' << y_ << ')';}
-    void printCen() const {std::cout << centroid_;}
-    void printOut() const {std::cout << outlier_;}
+    int getCen() const {return centroid_;}
+    bool getOut() const {return outlier_;}
 
 private:
     int centroid_ = -1;

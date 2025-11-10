@@ -2,30 +2,43 @@
 
 int main()
 {
-    // given list of points and centroids
-    std::vector<Point> points = {
-        // Cluster A (bottom-left)
-        Point(0, 1.0f, 1.5f),
-        Point(1, 2.0f, 2.2f),
-        Point(2, 3.0f, 1.9f),
-        // Cluster B (upper-middle)
-        Point(3, 4.0f, 6.0f),
-        Point(4, 5.0f, 5.8f),
-        Point(5, 6.0f, 6.5f),
-        // Cluster C (upper-right)
-        Point(6, 7.0f, 8.5f),
-        Point(7, 8.0f, 9.1f),
-        Point(8, 9.0f, 9.3f),
-        Point(9, 30.0f, 8.6f)
-    };
+    std::ifstream input("input.txt");
+    if (!input.is_open()) {
+        std::cerr << "Error: could not open input.txt\n";
+        return 1;
+    }
 
-    std::vector<Centroid> centroids = {
-        Centroid(0, 2.0f, 2.0f, 0.0f),
-        Centroid(1, 7.0f, 7.0f, 0.0f)
-    };
+    char type;
+    int id;
+    float x, y, radius;
+
+    std::vector<Centroid> centroids;
+    std::vector<Point> points;
+
+    while (input >> type) {
+        if (type == 'C') {
+            input >> id >> x >> y >> radius;
+            centroids.emplace_back(id, x, y, radius);
+        } 
+        else if (type == 'P') {
+            input >> id >> x >> y;
+            points.emplace_back(id, x, y);
+        }
+    }
+
+    input.close();
+
+    std::ofstream output("output.txt");
+    
+    if(!output.is_open())
+    {
+        std::cerr << "Output file couldn't open";
+        return 1;
+    }
 
     // used for comparison to check if loop can end
     std::vector<std::vector<float>> holder(centroids.size(), std::vector<float>(points.size()));
+    int iteration = 1;
 
     while(true)
     {
@@ -58,23 +71,17 @@ int main()
         }
 
         // check if changes are present
-        if(holder == distances) {std::cout << "complete" << std::endl; return 1;}
+        if(holder == distances) {output << "\ncomplete"; output.close(); return 1;}
         holder = distances;
 
-        std::cout << "\nFinal centroid positions:\n";
+        output << "\nIteration " << iteration << " centroid positions:\n";
         for (const auto& c : centroids) {
-            c.printCen();
-            std::cout << " -> ";
-            c.printLoc();
-            std::cout << '\n';
+            output << c.getId() << " -> (" << c.getX() << ", " << c.getY() << ")\n";
         }
 
-        std::cout << "\nPoint assignments:\n";
+        output << "\nPoint assignments:\n";
         for (const auto& p : points) {
-            p.printLoc();
-            std::cout << " -> Centroid ";
-            p.printCen();
-            std::cout << '\n';
+            output << "(" << p.getX() << ", " << p.getY() << ")"<< " -> Centroid " << p.getCen() << ", is Outlier: " << (p.getOut()?"True":"False") << '\n';
         }
 
         // recalculate centroids
@@ -82,7 +89,7 @@ int main()
         {
             recalculateCentroid(groups[l.getId()],l);
         }
-
+        iteration++;
     }
 
     std::cout << "failed" << std::endl;

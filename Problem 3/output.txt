@@ -1,0 +1,107 @@
+
+Iteration 1 centroid positions:
+0 -> (34.4735, 10.4966)
+1 -> (46.8554, 39.4669)
+
+Point assignments:
+(39.826, 14.0924) -> Centroid -1, is Outlier: True
+(39.2377, 14.9864) -> Centroid -1, is Outlier: True
+(8.99626, 13.7111) -> Centroid -1, is Outlier: True
+(19.034, 5.9787) -> Centroid -1, is Outlier: True
+(5.6934, 32.5261) -> Centroid -1, is Outlier: True
+(5.86274, 10.2829) -> Centroid -1, is Outlier: True
+(25.9739, 13.8235) -> Centroid -1, is Outlier: True
+(17.4839, 21.8829) -> Centroid -1, is Outlier: True
+(43.5483, 21.0772) -> Centroid -1, is Outlier: True
+(49.4669, 8.43207) -> Centroid -1, is Outlier: True
+(38.8043, 31.0312) -> Centroid -1, is Outlier: True
+(38.5943, 32.9069) -> Centroid -1, is Outlier: True
+(10.0859, 3.13026) -> Centroid -1, is Outlier: True
+(16.0532, 14.758) -> Centroid -1, is Outlier: True
+(26.0725, 14.1953) -> Centroid -1, is Outlier: True
+
+Iteration 1 centroid positions:
+0 -> (34.4735, 10.4966)
+1 -> (46.8554, 39.4669)
+
+Point assignments:
+(39.826, 14.0924) -> Centroid 0, is Outlier: False
+(39.2377, 14.9864) -> Centroid 0, is Outlier: False
+(8.99626, 13.7111) -> Centroid 0, is Outlier: False
+(19.034, 5.9787) -> Centroid 0, is Outlier: False
+(5.6934, 32.5261) -> Centroid 0, is Outlier: False
+(5.86274, 10.2829) -> Centroid 0, is Outlier: False
+(25.9739, 13.8235) -> Centroid 0, is Outlier: False
+(17.4839, 21.8829) -> Centroid 0, is Outlier: False
+(43.5483, 21.0772) -> Centroid 0, is Outlier: False
+(49.4669, 8.43207) -> Centroid 0, is Outlier: False
+(38.8043, 31.0312) -> Centroid 1, is Outlier: False
+(38.5943, 32.9069) -> Centroid 1, is Outlier: False
+(10.0859, 3.13026) -> Centroid 0, is Outlier: False
+(16.0532, 14.758) -> Centroid 0, is Outlier: False
+(26.0725, 14.1953) -> Centroid 0, is Outlier: False
+
+Iteration 2 centroid positions:
+0 -> (23.6411, 14.529)
+1 -> (38.6993, 31.969)
+
+Point assignments:
+(39.826, 14.0924) -> Centroid 0, is Outlier: False
+(39.2377, 14.9864) -> Centroid 0, is Outlier: False
+(8.99626, 13.7111) -> Centroid 0, is Outlier: False
+(19.034, 5.9787) -> Centroid 0, is Outlier: False
+(5.6934, 32.5261) -> Centroid 0, is Outlier: False
+(5.86274, 10.2829) -> Centroid 0, is Outlier: False
+(25.9739, 13.8235) -> Centroid 0, is Outlier: True
+(17.4839, 21.8829) -> Centroid 0, is Outlier: False
+(43.5483, 21.0772) -> Centroid 1, is Outlier: False
+(49.4669, 8.43207) -> Centroid 1, is Outlier: False
+(38.8043, 31.0312) -> Centroid 1, is Outlier: True
+(38.5943, 32.9069) -> Centroid 1, is Outlier: True
+(10.0859, 3.13026) -> Centroid 0, is Outlier: False
+(16.0532, 14.758) -> Centroid 0, is Outlier: False
+(26.0725, 14.1953) -> Centroid 0, is Outlier: True
+
+Iteration 3 centroid positions:
+0 -> (19.4836, 14.488)
+1 -> (42.6034, 23.3618)
+
+Point assignments:
+(39.826, 14.0924) -> Centroid 1, is Outlier: False
+(39.2377, 14.9864) -> Centroid 1, is Outlier: False
+(8.99626, 13.7111) -> Centroid 0, is Outlier: False
+(19.034, 5.9787) -> Centroid 0, is Outlier: False
+(5.6934, 32.5261) -> Centroid 0, is Outlier: False
+(5.86274, 10.2829) -> Centroid 0, is Outlier: False
+(25.9739, 13.8235) -> Centroid 0, is Outlier: False
+(17.4839, 21.8829) -> Centroid 0, is Outlier: False
+(43.5483, 21.0772) -> Centroid 1, is Outlier: True
+(49.4669, 8.43207) -> Centroid 1, is Outlier: False
+(38.8043, 31.0312) -> Centroid 1, is Outlier: False
+(38.5943, 32.9069) -> Centroid 1, is Outlier: False
+(10.0859, 3.13026) -> Centroid 0, is Outlier: False
+(16.0532, 14.758) -> Centroid 0, is Outlier: True
+(26.0725, 14.1953) -> Centroid 0, is Outlier: False
+
+Iteration 4 centroid positions:
+0 -> (15.0284, 14.4765)
+1 -> (41.5796, 20.421)
+
+Point assignments:
+(39.826, 14.0924) -> Centroid 1, is Outlier: False
+(39.2377, 14.9864) -> Centroid 1, is Outlier: False
+(8.99626, 13.7111) -> Centroid 0, is Outlier: False
+(19.034, 5.9787) -> Centroid 0, is Outlier: False
+(5.6934, 32.5261) -> Centroid 0, is Outlier: False
+(5.86274, 10.2829) -> Centroid 0, is Outlier: False
+(25.9739, 13.8235) -> Centroid 0, is Outlier: False
+(17.4839, 21.8829) -> Centroid 0, is Outlier: False
+(43.5483, 21.0772) -> Centroid 1, is Outlier: True
+(49.4669, 8.43207) -> Centroid 1, is Outlier: False
+(38.8043, 31.0312) -> Centroid 1, is Outlier: False
+(38.5943, 32.9069) -> Centroid 1, is Outlier: False
+(10.0859, 3.13026) -> Centroid 0, is Outlier: False
+(16.0532, 14.758) -> Centroid 0, is Outlier: True
+(26.0725, 14.1953) -> Centroid 0, is Outlier: False
+
+complete
