@@ -1,6 +1,6 @@
 #include "cluster.hpp"
 
-float calculateDistance(const Location& centroid, const Location& point)
+float calculateDistance(const Centroid& centroid, const Point& point)
 {
     float deltaX = centroid.getX() - point.getX(), deltaY = centroid.getY() - point.getY();
     return std::sqrt((deltaX * deltaX) + (deltaY * deltaY));
@@ -8,13 +8,13 @@ float calculateDistance(const Location& centroid, const Location& point)
 
 
 
-void reCalculateCentroid(const std::vector<Location>& input, Location& centroid)
+void recalculateCentroid(const std::vector<Point>& input, Centroid& centroid)
 {
     float xTotal = 0, yTotal =0;
-    for(Location l : input)
+    for (const Point& p : input)
     {
-        xTotal += l.getX();
-        yTotal += l.getY();
+        xTotal += p.getX();
+        yTotal += p.getY();
     }
     centroid.setLoc({xTotal / input.size(), yTotal / input.size()});
 }

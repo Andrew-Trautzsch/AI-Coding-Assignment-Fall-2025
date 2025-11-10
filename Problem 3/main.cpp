@@ -18,27 +18,28 @@ int main()
         std::unordered_map<int, std::vector<Point>> groups;
 
         // computes distance table
-        for(int j=0; j<points.size(); j++)
+        for(int j=0; j<points.size(); j++) // point
         {
             int belongsTo = -1;
+            float smallest = -1;
             bool isOutlier = false;
-            for(int i=0; j<centroids.size(); i++)
+            for(int i=0; j<centroids.size(); i++) // centroid
             {
                 // goes point by point rather than centroid to give points their centroids
-                distances[i][j] = calculateDistance(points[j],centroids[i]);
+                distances[i][j] = calculateDistance(centroids[i], points[j]);
                 if(j==0) {
                     belongsTo = centroids[i].getId();
+                    smallest = distances[i][j];
                 }
                 else 
                 {
-                    belongsTo = distances[i][j] > distances[i][j-1]? centroids[j-1].getId():centroids[j].getId();
-                    if() // ADD OUTLIER STEP
+                    belongsTo = distances[i][j] > distances[i][j-1] ? centroids[j-1].getId():centroids[j].getId();
+                    belongsTo = distances[i][j] > distances[i][j-1] ? distances[i][j-1]:distances[i][j];
                 }
             }
             points[j].assignCentroid(belongsTo);
             groups[belongsTo].push_back(points[j]);
         }
-
 
         // recalculate centroids
         for(Centroid l : centroids)
@@ -47,9 +48,10 @@ int main()
         }
 
         // check if changes are present
-        if(holder == distances) return 1;
+        if(holder == distances) {std::cout << "complete" << std::endl; return 1;}
         holder = distances;
     }
 
+    std::cout << "failed" << std::endl;
     return 0;
 }

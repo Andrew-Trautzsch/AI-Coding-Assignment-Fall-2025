@@ -1,5 +1,5 @@
-#ifndef CLUSTER.HPP
-#define CLUSTER.HPP
+#ifndef CLUSTER_HPP
+#define CLUSTER_HPP
 
 #include <iostream>
 #include <vector>
@@ -10,8 +10,8 @@ class Location
 {
 public:
     Location(int id, float x, float y) :  id_(id), x_(x), y_(y) {}
-    float getX() {return x_;}
-    float getY() {return y_;}
+    float getX() const {return x_;}
+    float getY() const {return y_;}
 protected:
     float x_, y_;
     int id_ = -1;
@@ -41,7 +41,7 @@ private:
 class Centroid : public Location
 {
 public:
-    Centroid(float x, float y, int num, float radius) : Location(x,y,num), radius_(radius) {}
+    Centroid(int id, float x, float y, float radius) : Location(id,x,y), radius_(radius) {}
 
     // Mutators
     void setLoc(const std::pair<float,float>& input) {x_ = input.first; y_ = input.second;}
@@ -50,12 +50,13 @@ public:
     void printLoc() {std::cout << '(' << x_ << ',' << y_ << ')';}
     void printCen() {std::cout << id_;}
     int getId() {return id_;}
+    float getRadius() {return radius_;}
 
 private:
     float radius_ = 0;
 };
 
-float calculateDistance(const Location&, const Location&);
-void recalculateCentroid(const std::vector<Location>&, Location&);
+float calculateDistance(const Centroid&, const Point&);
+void recalculateCentroid(const std::vector<Point>&, Centroid&);
 
-#endif // CLUSTER.HPP
+#endif // CLUSTER_HPP
