@@ -29,9 +29,9 @@ public:
     void assignOutlier(bool input) {outlier_ = input;}
 
     // Accessors
-    void printLoc() {std::cout << '(' << x_ << ',' << y_ << ')';}
-    void printCen() {std::cout << centroid_;}
-    void printOut() {std::cout << outlier_;}
+    void printLoc() const {std::cout << '(' << x_ << ',' << y_ << ')';}
+    void printCen() const {std::cout << centroid_;}
+    void printOut() const {std::cout << outlier_;}
 
 private:
     int centroid_ = -1;
@@ -47,10 +47,10 @@ public:
     void setLoc(const std::pair<float,float>& input) {x_ = input.first; y_ = input.second;}
 
     // Accessors
-    void printLoc() {std::cout << '(' << x_ << ',' << y_ << ')';}
-    void printCen() {std::cout << id_;}
-    int getId() {return id_;}
-    float getRadius() {return radius_;}
+    void printLoc() const {std::cout << '(' << x_ << ',' << y_ << ')';}
+    void printCen() const {std::cout << id_;}
+    int getId() const {return id_;}
+    float getRadius() const{return radius_;}
 
 private:
     float radius_ = 0;
