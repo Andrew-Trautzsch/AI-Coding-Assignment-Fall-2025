@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     std::uniform_real_distribution<float> distR(0.0f, radius);
 
     // Generate Centroids
-    for (int i = 0; i < numClusters; ++i) output << "C " << i << ' ' << distX(gen) << ' ' << distY(gen) << ' ' << distR << '\n';
+    for (int i = 0; i < numClusters; ++i) output << "C " << i << ' ' << distX(gen) << ' ' << distY(gen) << ' ' << distR(gen) << '\n';
 
     // Generate Points
     for (int i = 0; i < numPoints; ++i) output << "P " << i << ' ' << distX(gen) << ' ' << distY(gen) << '\n';
