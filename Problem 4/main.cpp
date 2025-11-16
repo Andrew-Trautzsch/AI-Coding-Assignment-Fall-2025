@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 int main()
 {
@@ -42,21 +43,32 @@ int main()
     }
     xMean = (xMean/points.size()); yMean = (yMean/points.size());
 
-    // Calculate X variance and XY covariance
-    float varX = 0, coVarXY = 0;
+    // Calculate X variance, Y variance, and XY covariance
+    float varX = 0, varY = 0, coVarXY = 0;
     for(std::pair<float,float> i : points)
     {
         varX += ((i.first - xMean)*(i.first - xMean));
+        varY += ((i.second - yMean)*(i.second - yMean));
         coVarXY += ((i.first - xMean)*(i.second - yMean));
     }
-    varX = (varX/(points.size()-1)); coVarXY = (coVarXY/(points.size()-1));
+    varX = (varX/(points.size()-1)); varY = (varY/(points.size()-1));
+    coVarXY = (coVarXY/(points.size()-1));
 
-    // slope and intercept
+    // slope, intercept, r value
     float slope = coVarXY / varX;
     float intercept = yMean - (slope*xMean);
+    float relationship = coVarXY / (sqrt(varX)*sqrt(varY));
+
+    // error
+    float error = 0;
+    for(std::pair<float,float> i : points)
+    {
+        error += ((i.second - (slope*i.first + intercept))*(i.second - (slope*i.first + intercept)));
+    }
+    error = sqrt(error/points.size());
 
     // y = mx + b
-    std::cout << "y = m*x + b\n" << "y = " << slope << " * x + " << intercept << std::endl;
+    std::cout << "y = m*x + b\n" << "y = " << slope << " * x + " << intercept << "\nr = " << relationship << ", average error = " << error << '\n';
 
     while(true)
     {
