@@ -1,24 +1,5 @@
 #include "hmm.hpp"
 
-HMM::HMM(const std::vector<int>& states, const std::vector<char>& emissions, const std::vector<double>& initial, const std::vector<char>& goal)
-{
-    std::cout << "\ninitializing...\n";
-    // initialization
-    states_ = states; emissions_ = emissions; initial_ = initial; goal_ = goal;
-
-    // table creation
-    for(int i=0; i<states_.size(); i++)
-    {
-        // transition (states_ * states_)
-        for(int j; j<states_.size(); j++) {traTable_[i][j] = (states_[i] * states_[j]); std::cout << (states_[i] * states_[j]) << ' ';}
-        std::cout << '\n';
-        // emission (states_ * emissions_)
-        for(int j; j<emissions_.size(); j++) {emiTable_[i][j] = (states_[i] * emissions[j]); std::cout << (states_[i] * emissions_[j]) << ' ';}
-        std::cout << '\n';
-    }
-    
-}
-
 int HMM::getEmissionIndex(char input)
 {
     for (int i=0; i<emissions_.size(); i++)
@@ -47,7 +28,7 @@ void HMM::calculateStep(int stepNum)
         // 'from'
         for(int j=0; j<from.size(); j++)
         {
-            double num = traTable_[i][j] * from[j] * emiTable_[i][currentEmission];
+            double num = from[j] * traTable_[j][i] * emiTable_[i][currentEmission];
             holder[i][j] = num;
             std::cout << num << ' ';
             // take greatest odd to store in probablity table
@@ -62,21 +43,23 @@ void HMM::backTrack()
 {
     std::cout << "\nbacktracking... \n";
     std::vector<int> path(goal_.size());
-    for(int i=proTable_.size(); i>0; i--)
+    for (int i = proTable_.size() - 1; i >= 0; i--)
     {
         double greatest = 0;
         int holder = 0;
         for(int j=0; j<proTable_[i].size(); j++)
         {
-            if (greatest > proTable_[i][j]) holder = j;
-            else greatest = proTable_[i][j];
+            if (greatest < proTable_[i][j]) {
+                holder = j; 
+                greatest = proTable_[i][j];
+            }
         }
         path[i-1] = states_[holder];
     }
     std::cout << "\nOptimal path is ";
     for(int i : path)
     {
-        std::cout << i << ', ';
+        std::cout << i << ", ";
     }
     std::cout << '\n';
 }

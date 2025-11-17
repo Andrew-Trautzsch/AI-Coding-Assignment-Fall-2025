@@ -7,7 +7,10 @@
 
 struct HMM 
 {
-    HMM(const std::vector<int>&, const std::vector<char>&, const std::vector<double>&, const std::vector<char>&);
+    HMM(const std::vector<int>& states, const std::vector<char>& emissions, const std::vector<double>& initial, 
+        const std::vector<char>& goal, const std::vector<std::vector<double>>& traTable, const std::vector<std::vector<double>>& emiTable) :
+        states_(states), emissions_(emissions), initial_(initial), goal_(goal), traTable_(traTable), emiTable_(emiTable) 
+        {proTable_.assign(goal_.size(), std::vector<double>(states_.size(), 0.0));}
 
     void calculateStep(int);
     int getEmissionIndex(char);
