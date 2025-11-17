@@ -24,11 +24,21 @@ int main()
 
     HMM model(states, emissions, initial, goal, transition, emission);
 
-    for(int i=0; i<goal.size(); i++)
+    model.findPossibilities();
+
+    std::cout << "calculating odds...\n";
+    double greatest = 0; std::vector<int> path;
+    for(int i=0; i<model.posibilities_.size(); i++)
     {
-        model.calculateStep(i);
+        double tmp = model.calculateOdds(model.posibilities_[i]);
+        if(greatest < tmp)
+        {
+            greatest = tmp;
+            path = model.posibilities_[i];
+        }
     }
-    
-    model.backTrack();
+
+    std::cout << "\nMost optimal path is :";
+
     return 0;
 }

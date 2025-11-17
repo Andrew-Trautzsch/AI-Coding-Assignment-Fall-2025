@@ -1,65 +1,81 @@
 #include "hmm.hpp"
 
-int HMM::getEmissionIndex(char input)
+int HMM::getGoalIndex(char input)
 {
-    for (int i=0; i<emissions_.size(); i++)
+    for(int i=0; i<emissions_.size(); i++)
     {
-        if(emissions_[i] == input) return i;
+        if (input == emissions_[i]) return i;
     }
     return -1;
 }
 
-void HMM::calculateStep(int stepNum)
+void HMM::generatePaths(const std::vector<std::vector<int>>& validOptions)
 {
-    std::cout << "\nCurrent step: " << stepNum << '\n';
-    // initialzie 'from' vector, check if needs initial_ vector
-    std::vector<double> from;
-    if(stepNum == 0) from = initial_;
-    else from = proTable_[stepNum-1];
+    std::vector<int> current;
+    generatePathsHelper(validOptions, current, 0);
+}
 
-    int currentEmission = getEmissionIndex(goal_[stepNum]);
+void HMM::generatePathsHelper(const std::vector<std::vector<int>>& validOptions, std::vector<int>& current, int depth)
+{
+    if (current.size() == goal_.size())
+    {
+        posibilities_.push_back(current);
+        return;
+    }
+    for(int i : validOptions[depth])
+    {
+        current.push_back(i);
+        generatePathsHelper(validOptions, current, depth+1);
+        current.pop_back();
+    }
+}
 
-    // stores values of 'from' (inital/previous step) * 'to' (all states) * goal_[stepNum]
-    std::vector<std::vector<double>> holder(states_.size(), std::vector<double>(from.size()));
-    // 'to'
+void HMM::findPossibilities()
+{
+    std::cout << "Calculating possibilities...\n";
+    std::vector<std::vector<int>> validOptions(goal_.size());
+
     for(int i=0; i<states_.size(); i++)
     {
-        double greatest = 0;
-        // 'from'
-        for(int j=0; j<from.size(); j++)
-        {
-            double num = from[j] * traTable_[j][i] * emiTable_[i][currentEmission];
-            holder[i][j] = num;
-            std::cout << num << ' ';
-            // take greatest odd to store in probablity table
-            greatest = num>greatest?num:greatest;
-        }
-        std::cout << '\n';
-        proTable_[stepNum][i] = greatest;
+        if(emiTable_[i][getGoalIndex(goal_[0])] != 0) validOptions[0].push_back(i);
     }
+
+    for(int i=1; i<goal_.size(); i++)
+    {
+        for(int j=0; j<states_.size(); j++)
+        {
+            if(emiTable_[j][getGoalIndex(goal_[i])] != 0) validOptions[i].push_back(i);
+        }
+    }
+
+    std::cout << "Generating paths...\n";
+    generatePaths(validOptions);
+
+    std::cout << "Trimming paths...\n";
+    for(auto it = posibilities_.begin(); it != posibilities_.end(); )
+    {
+        const std::vector<int>& path = *it;
+        bool tmp = true; // is a valid path
+        for(int i=0; i<path.size()-1; i++)
+        {
+            if(traTable_[path[i]][path[i+1]] == 0) tmp = false;
+        }
+        if(tmp) it++;
+        else it = posibilities_.erase(it);
+    }
+
 }
 
-void HMM::backTrack()
+double HMM::calculateOdds(const std::vector<int>& input)
 {
-    std::cout << "\nbacktracking... \n";
-    std::vector<int> path(goal_.size());
-    for (int i = proTable_.size() - 1; i >= 0; i--)
+    double output = (emiTable_[input[0]][getGoalIndex(goal_[0])]) * (initial_[input[0]]);
+
+    for(int i=1; i<input.size(); i++)
     {
-        double greatest = 0;
-        int holder = 0;
-        for(int j=0; j<proTable_[i].size(); j++)
-        {
-            if (greatest < proTable_[i][j]) {
-                holder = j; 
-                greatest = proTable_[i][j];
-            }
-        }
-        path[i-1] = states_[holder];
+        output = output * (emiTable_[input[i]][getGoalIndex(goal_[i])]) * (traTable_[input[i-1]][input[i]]);
     }
-    std::cout << "\nOptimal path is ";
-    for(int i : path)
-    {
-        std::cout << i << ", ";
-    }
-    std::cout << '\n';
+
+    return output;
 }
+
+
