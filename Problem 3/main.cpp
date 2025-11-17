@@ -13,6 +13,8 @@ int main()
     float x, y, radius;
 
     std::vector<Centroid> centroids;
+    centroids.emplace_back(0, 0, 0, 0);
+
     std::vector<Point> points;
 
     while (input >> type) {
@@ -78,7 +80,7 @@ int main()
         std::vector<std::vector<float>> distances(centroids.size(), std::vector<float>(points.size(), 0.0f));
         
         // map of centroid belongings
-        std::unordered_map<int, std::vector<Point>> groups;
+        std::unordered_map<int, std::vector<Point>> groups(centroids.size());
 
         // std::cout << "before for j\n";
         // computes distance table
@@ -87,43 +89,51 @@ int main()
             int belongsTo = -1;
             float smallest = -1;
             // std::cout << "before for i\n";
-            for(int i=0; i<centroids.size(); i++) // centroid
+            for(int i=1; i<centroids.size(); i++) // centroid
             {
                 // goes point by point rather than centroid to give points their centroids
                 float dist = calculateDistance(centroids[i], points[j]);
                 distances[i][j] = dist;
 
-                if (i == 0 || dist < smallest) {
+                if (i == 1 || dist < smallest) {
                     smallest = dist;
                     belongsTo = centroids[i].getId();
                 }
             }
             // std::cout << "after for i\n";
-            points[j].assignCentroid(belongsTo);
-            if(centroids[belongsTo].getRadius() > smallest) points[j].assignOutlier(true);
-            else points[j].assignOutlier(false);
-            groups[belongsTo].push_back(points[j]);
+            if(centroids[belongsTo].getRadius() <= smallest) {points[j].assignCentroid(belongsTo); groups[belongsTo].push_back(points[j]);}
+            else {points[j].assignCentroid(0); groups[0].push_back(points[j]);}
+            
+            
         }
         // std::cout << "after for j\n";
 
         // check if changes are present
-        if(holder == distances) {output << "\ncomplete"; std::cout << "complete\n"; output.close(); return 1;}
+        if(holder == distances) {output << "\ncomplete"; std::cout << "complete\n"; output.close(); return 0;}
         holder = distances;
 
-        output << "\nIteration " << iteration << " centroid positions:\n";
-        for (const auto& c : centroids) {
-            output << c.getId() << " -> (" << c.getX() << ", " << c.getY() << ")\n";
+        output << "\nIteration " << iteration;
+        for (int i=1; i<centroids.size(); i++)
+        {
+            output << "\nCentroid " << i << " posistion\n";
+            output << centroids[i].getId() << " -> (" << centroids[i].getX() << ", " << centroids[i].getY() << ")\n";
+
+            output << "\nPoint assignments: (" << groups[i].size() << ")\n";
+            for (int j=0; j<groups[i].size(); j++)
+            {
+                output << "(" << groups[i][j].getX() << ", " << groups[i][j].getY() << ")"<< " -> Centroid " << groups[i][j].getCen() << '\n';
+            }
         }
 
-        output << "\nPoint assignments:\n";
-        for (const auto& p : points) {
-            output << "(" << p.getX() << ", " << p.getY() << ")"<< " -> Centroid " << p.getCen() << ", is Outlier: " << (p.getOut()?"True":"False") << '\n';
+        output << "\nOutliers:\n";
+        for (const auto& p : groups[0]) {
+            output << "(" << p.getX() << ", " << p.getY() << ")"<< " -> Centroid " << p.getCen() << '\n';
         }
 
         // recalculate centroids
-        for(Centroid& l : centroids)
+        for(int i=1; i<centroids.size(); i++)
         {
-            recalculateCentroid(groups[l.getId()],l);
+            recalculateCentroid(groups[i],centroids[i]);
         }
         iteration++;
     }

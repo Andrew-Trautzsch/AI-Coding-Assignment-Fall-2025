@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     int numPoints = 15;
     float xRange = 50.0f;
     float yRange = 50.0f;
-    float radius = 5.0f;
+    float radius = 15.0f;
     std::string filename = "input.txt";
 
     if (argc >= 6)
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     std::uniform_real_distribution<float> distR(0.0f, radius);
 
     // Generate Centroids
-    for (int i = 0; i < numClusters; ++i) output << "C " << i << ' ' << distX(gen) << ' ' << distY(gen) << ' ' << distR(gen) << '\n';
+    for (int i = 0; i < numClusters; ++i) output << "C " << (i+1) << ' ' << distX(gen) << ' ' << distY(gen) << ' ' << distR(gen) << '\n';
 
     // Generate Points
     for (int i = 0; i < numPoints; ++i) output << "P " << i << ' ' << distX(gen) << ' ' << distY(gen) << '\n';
