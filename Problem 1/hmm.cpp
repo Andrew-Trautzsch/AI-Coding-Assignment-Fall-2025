@@ -44,7 +44,7 @@ void HMM::findPossibilities()
     {
         for(int j=0; j<states_.size(); j++)
         {
-            if(emiTable_[j][getGoalIndex(goal_[i])] != 0) validOptions[i].push_back(i);
+            if(emiTable_[j][getGoalIndex(goal_[i])] != 0) validOptions[i].push_back(j);
         }
     }
 
@@ -69,12 +69,10 @@ void HMM::findPossibilities()
 double HMM::calculateOdds(const std::vector<int>& input)
 {
     double output = (emiTable_[input[0]][getGoalIndex(goal_[0])]) * (initial_[input[0]]);
-
     for(int i=1; i<input.size(); i++)
     {
         output = output * (emiTable_[input[i]][getGoalIndex(goal_[i])]) * (traTable_[input[i-1]][input[i]]);
     }
-
     return output;
 }
 

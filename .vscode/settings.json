@@ -57,6 +57,7 @@
         "fstream": "cpp",
         "optional": "cpp",
         "random": "cpp",
-        "xstddef": "cpp"
+        "xstddef": "cpp",
+        "numeric": "cpp"
     }
 }

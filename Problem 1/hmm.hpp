@@ -15,8 +15,8 @@ struct HMM
     double calculateOdds(const std::vector<int>&);
     int getGoalIndex(char);
 
-    void generatePath(const std::vector<std::vector<int>>&);
-    void generatePathHelper(const std::vector<std::vector<int>>&, std::vector<int>&, int depth);
+    void generatePaths(const std::vector<std::vector<int>>&);
+    void generatePathsHelper(const std::vector<std::vector<int>>&, std::vector<int>&, int depth);
 
     std::vector<int> states_; // 1,2,3,...,n
     std::vector<char> emissions_; // A,B,C,...,m

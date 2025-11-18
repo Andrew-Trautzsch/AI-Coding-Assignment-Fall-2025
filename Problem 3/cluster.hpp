@@ -15,7 +15,7 @@ public:
     float getY() const {return y_;}
 protected:
     float x_, y_;
-    int id_ = -1;
+    int id_ = -1; // 0 is outlier
 };
 
 class Centroid;
@@ -27,15 +27,12 @@ public:
 
     // Mutators
     void assignCentroid(int input) {centroid_ = input;}
-    void assignOutlier(bool input) {outlier_ = input;}
 
     // Accessors
     int getCen() const {return centroid_;}
-    bool getOut() const {return outlier_;}
 
 private:
     int centroid_ = -1;
-    bool outlier_ = 1;
 };
 
 class Centroid : public Location
