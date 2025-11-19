@@ -48,3 +48,19 @@ Description:
 `Write a linear regression analysis program that finds out the fitting line plot for the given data,
 and predicts the value of a dependent variable given the value of an independent variable. `
 
+
+### Additional Requirements
+
+- `In HMM problem, I should be able to give a new sequence and it should show all
+possible paths and their probabilities. It should also display transition and emission
+matrices and most probable path. The instructor should be able to tweak some of
+the values of the transition or emission matrix by giving a triple (row no, col no,
+value) to see that your program is behaving right.`
+- `In ANN problem, the instructor would like to see input, output, error and change in
+weight after every training point.`
+- `In clustering problem, the instructor would like to see after every cycle new
+coordinates of centroid, change in the coordinate value, list of points in each
+cluster until convergence.`
+- `In regression analysis problem, the instructor will like see the intercept and slope
+every time set of points are chosen. Input data can be from a file or through the
+terminal.`
