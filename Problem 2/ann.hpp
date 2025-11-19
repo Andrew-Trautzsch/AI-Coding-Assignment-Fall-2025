@@ -11,16 +11,16 @@ class Layer;
 class ANN
 {
 public:
-    ANN(const std::vector<double>&, const std::vector<double>&, const std::vector<Layer>&);
+    ANN(const std::vector<double>& input, const std::vector<double>& desiredOutput, const std::vector<Layer>& layers)
+    : input_(input), desiredOutput_(desiredOutput), layers_(layers) {}
 
     std::vector<double> forward(const std::vector<double>&);
     void backPropagate();
 
 private:
-    float learningRate;
-    std::vector<Layer> layers_;
     std::vector<double> input_;
     std::vector<double> desiredOutput_;
+    std::vector<Layer> layers_;
 };
 
 struct Layer
@@ -39,7 +39,7 @@ struct Layer
     double sigmoidPrime(double input) {return (sigmoid(input) * (1-sigmoid(input)));}
 
     // weight update
-    void updateWeights(const std::vector<double>&, double);
+    void updateWeights(const std::vector<double>&);
 };
 
 #endif // ANN_HPP

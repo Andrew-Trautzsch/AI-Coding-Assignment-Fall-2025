@@ -15,7 +15,7 @@ std::vector<double> Layer::computeOutput(const std::vector<double>& input)
             sum += weights_[i][j] * input[j];
         }
 
-        saved_[i] = sum;              // store pre-activation value
+        saved_[i] = sum;// store pre-activation value
 
         // Activation: threshold + sigmoid
         if (sum > threshold)
@@ -34,7 +34,7 @@ void Layer::updateWeights(const std::vector<double>& input)
     {
         for(int j=0; j<weights_[i].size(); j++)
         {
-            weights_[i][j] -= input[i] * delta_[i] * lr;
+            weights_[i][j] -= input[j] * delta_[i] * lr;
         }
 
         bias_[i] -= delta_[i] * lr;
