@@ -17,6 +17,7 @@ int main()
 
     std::vector<Point> points;
 
+    // read centroids and points
     while (input >> type) {
         if (type == 'C') {
             input >> id >> x >> y >> radius;
@@ -28,6 +29,8 @@ int main()
         }
     }
 
+        input.close();
+
     // std::cout << "\nIteration " << 0 << " centroid positions:\n";
     // for (const auto& c : centroids) {
     //     std::cout << c.getId() << " -> (" << c.getX() << ", " << c.getY() << ")\n";
@@ -37,8 +40,6 @@ int main()
     // for (const auto& p : points) {
     //     std::cout << "(" << p.getX() << ", " << p.getY() << ")"<< " -> Centroid " << p.getCen() << ", is Outlier: " << (p.getOut()?"True":"False") << '\n';
     // }
-
-    input.close();
 
     // std::vector<Point> points = {
     //     // Cluster A (bottom-left)
@@ -82,13 +83,11 @@ int main()
         // map of centroid belongings
         std::unordered_map<int, std::vector<Point>> groups(centroids.size());
 
-        // std::cout << "before for j\n";
         // computes distance table
         for(int j=0; j<points.size(); j++) // point
         {
             int belongsTo = -1;
             float smallest = -1;
-            // std::cout << "before for i\n";
             for(int i=1; i<centroids.size(); i++) // centroid
             {
                 // goes point by point rather than centroid to give points their centroids
@@ -100,18 +99,17 @@ int main()
                     belongsTo = centroids[i].getId();
                 }
             }
-            // std::cout << "after for i\n";
             if(centroids[belongsTo].getRadius() <= smallest) {points[j].assignCentroid(belongsTo); groups[belongsTo].push_back(points[j]);}
             else {points[j].assignCentroid(0); groups[0].push_back(points[j]);}
             
             
         }
-        // std::cout << "after for j\n";
 
         // check if changes are present
         if(holder == distances) {output << "\ncomplete"; std::cout << "complete\n"; output.close(); return 0;}
         holder = distances;
 
+        // outputs
         output << "\nIteration " << iteration;
         for (int i=1; i<centroids.size(); i++)
         {
@@ -137,7 +135,6 @@ int main()
         }
         iteration++;
     }
-    // std::cout << "after while\n";
 
     std::cout << "failed" << std::endl;
     return 0;

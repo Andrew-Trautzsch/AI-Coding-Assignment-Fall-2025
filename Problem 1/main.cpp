@@ -38,63 +38,62 @@ int main()
 
     int numStates, numEmissions, obsLength;
 
-    // -----------------------
-    // Read states
-    // -----------------------
+    // read states
     input >> numStates;
     states.resize(numStates);
     for (int i = 0; i < numStates; i++)
         input >> states[i];
 
-    // -----------------------
-    // Read emissions
-    // -----------------------
+    // read emissiosn
     input >> numEmissions;
     emissions.resize(numEmissions);
     for (int i = 0; i < numEmissions; i++)
         input >> emissions[i];
 
-    // -----------------------
-    // Read initial probabilities
-    // -----------------------
+    // read initial vector
     initial.resize(numStates);
     for (int i = 0; i < numStates; i++)
         input >> initial[i];
 
-    // -----------------------
-    // Read transition matrix
-    // -----------------------
+    // read transistion matrix
     transition.assign(numStates, std::vector<double>(numStates));
     for (int r = 0; r < numStates; r++)
         for (int c = 0; c < numStates; c++)
             input >> transition[r][c];
 
-    // -----------------------
-    // Read emission matrix
-    // -----------------------
+    // read emission matrix
     emissionMat.assign(numStates, std::vector<double>(numEmissions));
     for (int r = 0; r < numStates; r++)
         for (int c = 0; c < numEmissions; c++)
             input >> emissionMat[r][c];
 
-    // -----------------------
-    // Read observation sequence
-    // -----------------------
+    // read goal sequence
     input >> obsLength;
     goal.resize(obsLength);
     for (int i = 0; i < obsLength; i++)
         input >> goal[i];
 
+    input.close();
+
+    std::ofstream out("output.txt");
+    if (!out.is_open()) {
+        std::cerr << "Error: could not open output.txt\n";
+        return 1;
+    }
 
     HMM model(states, emissions, initial, goal, transition, emissionMat);
 
     model.findPossibilities();
 
+    out << "All Possible Paths and Their Probabilities\n\n";
     std::cout << "calculating odds...\n";
     double greatest = 0; std::vector<int> path;
     for(int i=0; i<model.posibilities_.size(); i++)
     {
         double tmp = model.calculateOdds(model.posibilities_[i]);
+        out << "{";
+        for(int c : model.posibilities_[i]) out << c << " ";
+        out << "}  ->  " << tmp << "\n";
         if(greatest < tmp)
         {
             greatest = tmp;
@@ -102,12 +101,11 @@ int main()
         }
     }
 
-    std::cout << "\nMost optimal path is : {";
-    for(int i : path)
-    {
-        std::cout << i << ", ";
-    }
-    std::cout << "} with odds of " << greatest << "\n\n";
+    out << "\nMost optimal path is : {";
+    for(int i : path) out << i << ", ";
+    out << "} with odds of " << greatest;
+
+    out.close();
 
     return 0;
 }

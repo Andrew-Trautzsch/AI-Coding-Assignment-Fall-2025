@@ -2,11 +2,16 @@
 
 std::vector<double> ANN::forward(const std::vector<double>& input)
 {
+    forwardInputs_.clear();
+    forwardOutputs_.clear();
+
     std::vector<double> holder = input;
 
-    for(int i=0; i<layers_.size(); i++)
+    for (int i = 0; i < layers_.size(); i++)
     {
+        forwardInputs_.push_back(holder);
         holder = layers_[i].computeOutput(holder);
+        forwardOutputs_.push_back(layers_[i].output_);
     }
 
     return holder;
@@ -14,39 +19,36 @@ std::vector<double> ANN::forward(const std::vector<double>& input)
 
 void ANN::backPropagate()
 {
-    Layer& out = layers_.back();
-    out.delta_.resize(out.output_.size());
+    // Output layer delta
+    Layer& outLayer = layers_.back();
+    outLayer.delta_.resize(outLayer.output_.size());
 
-    // delta for output layer
-    for(int i=0; i<out.output_.size(); i++)
+    for (int i = 0; i < outLayer.output_.size(); i++)
     {
-        out.delta_[i] = (out.output_[i] - desiredOutput_[i]) * out.sigmoidPrime(out.saved_[i]);
+        double error = outLayer.output_[i] - desired_[i];
+        outLayer.delta_[i] = error * outLayer.sigmoidPrime(outLayer.saved_[i]);
     }
 
-    // delta for other layers
-    for(int i=layers_.size()-2; i>=0; i--)
+    // Hidden layers
+    for (int L = layers_.size() - 2; L >= 0; L--)
     {
-        Layer& current = layers_[i];
-        Layer& next = layers_[i+1];
+        Layer& curr = layers_[L];
+        Layer& next = layers_[L + 1];
 
-        current.delta_.resize(current.output_.size());
+        curr.delta_.resize(curr.output_.size());
 
-        for(int j=0; j<current.output_.size(); j++)
+        for (int i = 0; i < curr.output_.size(); i++)
         {
-            double sum = 0;
+            double sum = 0.0;
+            for (int j = 0; j < next.delta_.size(); j++)
+                sum += next.weights_[j][i] * next.delta_[j];
 
-            for(int k=0; k<next.delta_.size(); k++)
-            {
-                sum += next.weights_[k][j] * next.delta_[k];
-            }
-
-            current.delta_[j] = sum * current.sigmoidPrime(current.saved_[j]);
+            curr.delta_[i] = sum * curr.sigmoidPrime(curr.saved_[i]);
         }
     }
 
-    // update weights
+    // Weight updates
     layers_[0].updateWeights(input_);
-
-    for(int i=1; i<layers_.size(); i++)
-        layers_[i].updateWeights(layers_[i-1].output_);
+    for (int L = 1; L < layers_.size(); L++)
+        layers_[L].updateWeights(layers_[L - 1].output_);
 }

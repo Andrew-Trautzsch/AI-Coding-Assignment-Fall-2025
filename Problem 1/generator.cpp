@@ -12,6 +12,7 @@ double randProb(std::mt19937& gen)
     return dist(gen);
 }
 
+// makes sure nums always adds up to 1
 void normalize(std::vector<double>& row)
 {
     double sum = std::accumulate(row.begin(), row.end(), 0.0);
@@ -46,16 +47,12 @@ int main(int argc, char* argv[])
 
     std::mt19937 gen(static_cast<unsigned>(std::time(nullptr)));
 
-    // ----------------------
-    // States
-    // ----------------------
+    // generate num of states
     output << numStates << "\n";
     for (int i = 0; i < numStates; i++) output << i << " ";
     output << "\n\n";
 
-    // ----------------------
-    // Emissions
-    // ----------------------
+    // generate num of emissions
     output << numEmissions << "\n";
     for (int i = 0; i < numEmissions; i++)
     {
@@ -64,9 +61,7 @@ int main(int argc, char* argv[])
     }
     output << "\n\n";
 
-    // ----------------------
-    // Initial State Probabilities
-    // ----------------------
+    // generate inital vector based on num of states
     {
         std::vector<double> row(numStates);
         for (double& x : row) x = randProb(gen);
@@ -76,11 +71,10 @@ int main(int argc, char* argv[])
         output << "\n\n";
     }
 
-    // ----------------------
-    // Transition Matrix
-    // ----------------------
+    // generates transistion table (states * states)
     for (int s = 0; s < numStates; s++)
     {
+        // create random values and normalizes so values always add up to 1
         std::vector<double> row(numStates);
         for (double& x : row) x = randProb(gen);
         normalize(row);
@@ -90,11 +84,10 @@ int main(int argc, char* argv[])
     }
     output << "\n";
 
-    // ----------------------
-    // Emission Matrix
-    // ----------------------
+    // generates emissions table (states * emissions)
     for (int s = 0; s < numStates; s++)
     {
+        // create random values and normalizes so values always add up to 1
         std::vector<double> row(numEmissions);
         for (double& x : row) x = randProb(gen);
         normalize(row);
@@ -104,9 +97,7 @@ int main(int argc, char* argv[])
     }
     output << "\n";
 
-    // ----------------------
-    // Random Observation Sequence
-    // ----------------------
+    // generates goal sequence based on length and emissions
     output << seqLength << "\n";
     std::uniform_int_distribution<int> eDist(0, numEmissions - 1);
     for (int i = 0; i < seqLength; i++)
@@ -119,8 +110,7 @@ int main(int argc, char* argv[])
     output.close();
 
     std::cout << "Generated HMM file: " << filename << "\n";
-    std::cout << "States: " << numStates << ", Emissions: " 
-              << numEmissions << ", Obs-Length: " << seqLength << "\n";
+    std::cout << "States: " << numStates << ", Emissions: " << numEmissions << ", Obs-Length: " << seqLength << "\n";
 
     return 0;
 }

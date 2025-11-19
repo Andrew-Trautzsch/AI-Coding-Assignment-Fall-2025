@@ -70,6 +70,7 @@ int main()
     // y = mx + b
     std::cout << "y = m*x + b\n" << "y = " << slope << " * x + " << intercept << "\nr = " << relationship << ", average error = " << error << '\n';
 
+    // loop for user input
     while(true)
     {
         float input;
