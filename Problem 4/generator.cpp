@@ -8,15 +8,15 @@ int main(int argc, char* argv[])
 {
     // Defaults
     int numPoints = 15;
-    float xRange = 50.0f;
-    float yRange = 50.0f;
+    int xRange = 50;
+    int yRange = 50;
     std::string filename = "input.txt";
 
     if (argc >= 4)
     {
         numPoints = atoi(argv[1]);
-        xRange = static_cast<float>(atof(argv[2]));
-        yRange = static_cast<float>(atof(argv[3]));
+        xRange = static_cast<int>(atof(argv[2]));
+        yRange = static_cast<int>(atof(argv[3]));
     }
 
     std::ofstream output(filename);
@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
     }
 
     std::mt19937 gen(static_cast<unsigned>(std::time(nullptr)));
-    std::uniform_real_distribution<float> distX(0.0f, xRange);
-    std::uniform_real_distribution<float> distY(0.0f, yRange);
+    std::uniform_int_distribution<int> distX(0, xRange);
+    std::uniform_int_distribution<int> distY(0, yRange);
 
     // Generate Points
     for (int i = 0; i < numPoints; ++i) output << distX(gen) << ' ' << distY(gen) << '\n';
